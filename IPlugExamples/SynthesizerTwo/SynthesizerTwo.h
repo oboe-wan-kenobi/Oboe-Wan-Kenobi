@@ -6,7 +6,9 @@
 
 #pragma warning( suppress : 4101 4129 )
 #include "IPlug_include_in_plug_hdr.h"
-extern const int kNumPrograms;
+
+
+
 class SynthesizerTwo : public IPlug
 {
 
@@ -26,7 +28,7 @@ private:
   double mFrequency;
   void SynthesizerTwo::CreatePresets() {
       
-      MakeDefaultPreset((char*)"-", kNumPrograms);
+      MakeDefaultPreset(nullptr, kNumPrograms);
   }
   Oscillator mOscillator;
 

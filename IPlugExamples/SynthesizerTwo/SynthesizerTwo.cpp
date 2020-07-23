@@ -6,7 +6,7 @@
 #include "IControl.h"
 #include "resource.h"
 
-const int kNumPrograms = 5;
+const int kNumPrograms = 1;
 
 enum EParams
 {
@@ -18,7 +18,6 @@ enum ELayout
     kWidth = GUI_WIDTH,
     kHeight = GUI_HEIGHT
 };
-
 
 void SynthesizerTwo::ProcessMidiMsg(IMidiMsg* pMsg) {
     mMIDIReceiver.onMessageReceived(pMsg);
@@ -73,3 +72,6 @@ void SynthesizerTwo::OnParamChange(int paramIdx)
 {
     IMutexLock lock(this);
 }
+
+
+
