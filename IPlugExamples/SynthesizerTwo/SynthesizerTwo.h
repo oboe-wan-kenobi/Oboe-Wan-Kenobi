@@ -17,14 +17,17 @@ public:
   void OnParamChange(int paramIdx);
   void ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames);
 
+  // to receive MIDI messages:
+  void ProcessMidiMsg(IMidiMsg* pMsg);
+
 private:
   double mFrequency;
-  void CreatePresets() {
-
-      MakePreset("clean", 440.0);
-  
+  void SynthesizerTwo::CreatePresets() {
+      MakeDefaultPreset((char*)"-", kNumPrograms);
   }
   Oscillator mOscillator;
+
+  MIDIReceiver mMIDIReceiver;
 };
 
 #endif

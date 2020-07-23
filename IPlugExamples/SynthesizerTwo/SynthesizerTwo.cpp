@@ -10,43 +10,28 @@ const int kNumPrograms = 5;
 
 enum EParams
 {
-  kFrequency = 0,
-  kNumParams
+    kNumParams
 };
 
 enum ELayout
 {
-  kWidth = GUI_WIDTH,
-  kHeight = GUI_HEIGHT,
-
-  kFrequencyX = 79,
-  kFrequencyY = 62,
-  kKnobFrames = 128
+    kWidth = GUI_WIDTH,
+    kHeight = GUI_HEIGHT
 };
 
 
+void SynthesizerTwo::ProcessMidiMsg(IMidiMsg* pMsg) {
+    mMIDIReceiver.onMessageReceived(pMsg);
+}
 
 SynthesizerTwo::SynthesizerTwo(IPlugInstanceInfo instanceInfo)
-  :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), mFrequency(1.)
-{
-  TRACE;
+    : IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo) {
+    TRACE;
 
-  //arguments are: name, defaultVal, minVal, maxVal, step, label
-  GetParam(kFrequency)->InitDouble("Frequency", 440.0, 50.0, 20000.0, 0.01, "Hz");
-  GetParam(kFrequency)->SetShape(2.0);
-
-  IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
-  //pGraphics->AttachPanelBackground(&COLOR_BLUE);
-  pGraphics->AttachBackground(BACKGROUND_ID, BACKGROUND_FN);
-
-  IBitmap knob = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
-
-  pGraphics->AttachControl(new IKnobMultiControl(this, kFrequencyX, kFrequencyY, kFrequency, &knob));
-
-  AttachGraphics(pGraphics);
-
-  //MakePreset("preset 1", ... );
-  CreatePresets();
+    IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
+    pGraphics->AttachPanelBackground(&COLOR_RED);
+    AttachGraphics(pGraphics);
+    CreatePresets();
 }
 
 SynthesizerTwo::~SynthesizerTwo() {}
@@ -77,14 +62,4 @@ void SynthesizerTwo::Reset()
 void SynthesizerTwo::OnParamChange(int paramIdx)
 {
     IMutexLock lock(this);
-
-    switch (paramIdx)
-    {
-    case kFrequency:
-        mOscillator.setFrequency(GetParam(kFrequency)->Value());
-        break;
-
-    default:
-        break;
-    }
 }
