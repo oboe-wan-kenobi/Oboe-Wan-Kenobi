@@ -6,13 +6,15 @@
 
 #pragma warning( suppress : 4101 4129 )
 #include "IPlug_include_in_plug_hdr.h"
-
+extern const int kNumPrograms;
 class SynthesizerTwo : public IPlug
 {
+
 public:
+
   SynthesizerTwo(IPlugInstanceInfo instanceInfo);
   ~SynthesizerTwo();
-
+  //const int kNumPrograms = 5;
   void Reset();
   void OnParamChange(int paramIdx);
   void ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames);
@@ -23,6 +25,7 @@ public:
 private:
   double mFrequency;
   void SynthesizerTwo::CreatePresets() {
+      
       MakeDefaultPreset((char*)"-", kNumPrograms);
   }
   Oscillator mOscillator;
