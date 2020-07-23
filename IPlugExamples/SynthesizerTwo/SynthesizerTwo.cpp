@@ -36,20 +36,30 @@ SynthesizerTwo::SynthesizerTwo(IPlugInstanceInfo instanceInfo)
 
 SynthesizerTwo::~SynthesizerTwo() {}
 
-void SynthesizerTwo::ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames)
+void SynthesizerTwo::ProcessDoubleReplacing(
+    double** inputs,
+    double** outputs,
+    int nFrames)
 {
-  // Mutex is already locked for us.
- // Mutex is already locked for us.
+    // Mutex is already locked for us.
 
     double* leftOutput = outputs[0];
     double* rightOutput = outputs[1];
 
-    mOscillator.generate(leftOutput, nFrames);
-
-    // Copy left buffer into right buffer:
-    for (int s = 0; s < nFrames; ++s) {
-        rightOutput[s] = leftOutput[s];
+    for (int i = 0; i < nFrames; ++i) {
+        mMIDIReceiver.advance();
+        int velocity = mMIDIReceiver.getLastVelocity();
+        if (velocity > 0) {
+            mOscillator.setFrequency(mMIDIReceiver.getLastFrequency());
+            mOscillator.setMuted(false);
+        }
+        else {
+            mOscillator.setMuted(true);
+        }
+        leftOutput[i] = rightOutput[i] = mOscillator.nextSample() * velocity / 127.0;
     }
+
+    mMIDIReceiver.Flush(nFrames);
 }
 
 void SynthesizerTwo::Reset()
