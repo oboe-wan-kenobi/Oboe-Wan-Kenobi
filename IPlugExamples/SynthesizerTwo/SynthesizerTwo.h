@@ -2,6 +2,7 @@
 #define __SYNTHESIZERTWO__
 
 #include "Oscillator.h"
+#include "MIDIReceiver.h"
 
 #pragma warning( suppress : 4101 4129 )
 #include "IPlug_include_in_plug_hdr.h"
